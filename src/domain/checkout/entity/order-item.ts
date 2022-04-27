@@ -34,8 +34,12 @@ export class OrderItem {
     get quantity(): number {
       return this._quantity;
     }
+
+    get unitPrice(): number {
+      return this._price;
+    }
   
-    get price(): number {
+    get totalPrice(): number {
       return this._price * this._quantity;
     }
   }

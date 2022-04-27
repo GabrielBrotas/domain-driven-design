@@ -1,4 +1,6 @@
-export class Address {
+import { IAddress } from "./address.interface";
+
+export class Address implements IAddress {
     private _street: string;
     private _number: number;
     private _zip: string;
