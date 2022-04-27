@@ -1,6 +1,6 @@
 import { IEvent } from "../../@shared/event/event.interface";
 
-export class CostumerChangeAddressEvent implements IEvent {
+export class CustomerCreatedEvent implements IEvent {
     dataTimeOccurred: Date;
     eventData: any;
 
