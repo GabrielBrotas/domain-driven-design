@@ -17,6 +17,7 @@ export class OrderRepository implements OrderRepositoryInterface {
           price: item.unitPrice,
           product_id: item.productId,
           quantity: item.quantity,
+          order_id: entity.id,
         })),
       },
       {
@@ -26,27 +27,48 @@ export class OrderRepository implements OrderRepositoryInterface {
   }
 
   async update(entity: Order): Promise<void> {
-    await OrderModel.update(
-      {
-        customer_id: entity.customerId,
-        total: entity.total(),
-        items: entity.items.map((item) => ({
-          id: item.id,
-          name: item.name,
-          price: item.unitPrice,
-          product_id: item.productId,
-          quantity: item.quantity,
-        })),
-      },
-      {
-        where: { id: entity.id },
-      }
-    )
+    try{
+
+      const orderItems = entity.items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.unitPrice,
+        product_id: item.productId,
+        quantity: item.quantity,
+        order_id: entity.id,
+      }));
+
+      await OrderItemModel.bulkCreate(orderItems, {
+        updateOnDuplicate: ["name", "price", "product_id", "quantity"],
+      });
+  
+      await OrderModel.update(
+        {
+          id: entity.id,
+          customer_id: entity.customerId,
+          total: entity.total(),
+          items: entity.items.map((item) => ({
+            id: item.id,
+            name: item.name,
+            price: item.unitPrice,
+            product_id: item.productId,
+            quantity: item.quantity,
+            order_id: entity.id,
+          })),
+        },
+        {
+          where: { id: entity.id },
+        }
+      )
+      
+    }catch(err) {
+      console.log(err)
+    }
   }
 
   async findById(id: string): Promise<Order> {
     const orderModel = await OrderModel.findOne({ where: { id }, include: [{ model: OrderItemModel }] });
-    console.log(JSON.stringify({orderModel}, null, 2));
+
     return new Order(
       orderModel.id,
       orderModel.customer_id,
