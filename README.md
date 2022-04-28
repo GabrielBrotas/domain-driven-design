@@ -5,7 +5,6 @@ Como modelar um software de forma.
 DDD é uma forma de desenvolver software com o foco no coração da aplicação - o que chamamos de domínio - tendo o objetivo de entender suas regras, processos e complexidades, separando-as assim de outros pontos complexos que normalmente são adicionados durante o processo de desenvolvimento.
 
 DDD é sobre modelagem de linguagem ubíqua (universal) dentro de um contexto delimitado.
-
 <br />
 
 ### **Softwares complexos**
@@ -25,7 +24,6 @@ Domain-Driven Design é, antes de tudo, **comunicação**. No DDD modelagem e i
 Especialistas do domínio (usuários, analistas e outros especialistas da área), juntamente com os desenvolvedores e arquitetos trabalham de mãos dadas com um objetivo em comum: **construir software guiado pelo domínio para atender as necessidades do cliente.**
 
 Para fazer isso, em primeiro lugar, **é necessário que todos usem uma linguagem em comum** e que não haja tradução na comunicação entre os membros do time.
-
 <br />
 
 ### Como DDD pode ajudar?
@@ -44,7 +42,6 @@ Entender o contexto / limites de cada subdomínio
 - **Criar o design tático para conseguir mapear e agregar as entidades e objetos de valor da aplicação, bem como os eventos de domínio.**
 
 - **Clareza do que é complexidade de negócio e complexidade técnica.**
-
 <br />
 
 ## Domínio vs Subdomínio
@@ -82,14 +79,14 @@ DDD → Entender o problema e como você modela o problema para que você consig
 
 Com isso a gente acaba tendo um espaço de problema e um de solução
 
-```json
-					Problema                        Solução
+```
+	Problema                        Solução
 -----------------------------    ------------------------------
 (1)Visão geral do domínio     =>  (3) Analise e modelagem do
 e suas complexidades.                 domínio
-		   ⬇️                                   ⬇️                
-		   ⬇️                                   ⬇️                
-(2)	  	Subdomínios           =>  (4) Contextos delimitados
+	   ⬇️                                   ⬇️                
+	   ⬇️                                   ⬇️                
+(2).    Subdomínios           =>  (4) Contextos delimitados
 ```
 
 Quando temos a visão geral do domínio e suas complexidades a gente começa a entender e separar os subdomínios, ainda no espaço do problema.
@@ -150,7 +147,7 @@ Para cada contexto uma entidade vai ter que ser personalizada para o mesmo, pois
 
 Modelagem estratégica / Context Mapping
 
-<br />
+![Untitled](https://user-images.githubusercontent.com/63565773/165758510-292c30bd-3083-473a-b19f-774fd65dcbb9.png)
 
 
 Cliente / Fornecedor = um time fornece uma informação / serviço para o outro realizar uma transação
