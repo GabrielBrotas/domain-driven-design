@@ -164,9 +164,11 @@ describe("Order repository test", () => {
 
     const product1 = new Product("p1", "Product 1", 10);
     const product2 = new Product("p2", "Product 2", 10);
+    const product3 = new Product("p3", "Product 3", 15);
 
     await productRepository.create(product1);
     await productRepository.create(product2);
+    await productRepository.create(product3);
 
     const orderItem1 = new OrderItem(
       "1",
@@ -175,6 +177,7 @@ describe("Order repository test", () => {
       product1.id,
       2
     );
+
     const orderItem2 = new OrderItem(
       "2",
       product2.name,
@@ -183,18 +186,36 @@ describe("Order repository test", () => {
       2
     );
 
+    const orderItem3 = new OrderItem(
+      "3",
+      product3.name,
+      product3.price,
+      product3.id,
+      1
+    );
+
     const order = new Order("o1", "c1", [orderItem1]);
     await orderRepository.create(order);
 
     const orderFound = await orderRepository.findById(order.id);    
     expect(orderFound).toEqual(order);
 
-    const newOrdemItems = [orderItem1, orderItem2];
+    const newOrdemItems = [orderItem1, orderItem2, orderItem3];
     order.updateItems(newOrdemItems);
   
     await orderRepository.update(order);
     const orderUpdated = await orderRepository.findById(order.id);
 
     expect(orderUpdated).toEqual(order);
+
+    const newOrdemItemsRemoving = [orderItem3];
+    order.updateItems(newOrdemItemsRemoving);
+  
+    await orderRepository.update(order);
+    const orderUpdated2 = await orderRepository.findById(order.id);
+
+    expect(orderUpdated2).toEqual(order);
+
+
   })
 });

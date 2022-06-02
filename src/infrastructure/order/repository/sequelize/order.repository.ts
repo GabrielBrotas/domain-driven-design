@@ -29,38 +29,31 @@ export class OrderRepository implements OrderRepositoryInterface {
   async update(entity: Order): Promise<void> {
     try{
 
-      const orderItems = entity.items.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: item.unitPrice,
-        product_id: item.productId,
-        quantity: item.quantity,
-        order_id: entity.id,
-      }));
-
-      await OrderItemModel.bulkCreate(orderItems, {
-        updateOnDuplicate: ["name", "price", "product_id", "quantity"],
-      });
-  
-      await OrderModel.update(
-        {
-          id: entity.id,
-          customer_id: entity.customerId,
-          total: entity.total(),
-          items: entity.items.map((item) => ({
-            id: item.id,
-            name: item.name,
-            price: item.unitPrice,
-            product_id: item.productId,
-            quantity: item.quantity,
-            order_id: entity.id,
-          })),
-        },
-        {
-          where: { id: entity.id },
-        }
-      )
+      const sequelize = OrderModel.sequelize;
       
+      await sequelize.transaction(async (t) => {
+        await OrderItemModel.destroy({
+          where: { order_id: entity.id },
+          transaction: t,
+        });
+
+        const items = entity.items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          price: item.unitPrice,
+          product_id: item.productId,
+          quantity: item.quantity,
+          order_id: entity.id,
+        }));
+
+        await OrderItemModel.bulkCreate(items, { transaction: t });
+        
+        await OrderModel.update(
+          { total: entity.total() },
+          { where: { id: entity.id }, transaction: t }
+        );
+      });
+
     }catch(err) {
       console.log(err)
     }
